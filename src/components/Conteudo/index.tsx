@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { styled } from "styled-components"
 import imagem from './imagem.png'
 import { useEffect, useState } from "react"
@@ -6,8 +5,18 @@ import itens from '../../itens.json'
 import { Card } from '../Card'
 import ModalCard from './ModalCard'
 
-const ConteudoContainer = styled.main`
+const ConteudoContainer = styled.main<{display : string}>`
     padding: 4rem 0;
+    .modal-open{
+        display: ${props => props.display};
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        inset: 0;
+        background-color: #3887fd;
+        opacity: 0.5;
+        z-index: 90;
+    }
     hr{
         margin-top: -0.5rem;
         width: 90%;
@@ -95,19 +104,25 @@ const ListaItens = styled.ul`
     justify-content: center;
     flex-wrap: wrap;
     gap: 2rem;
-
     @media screen and (min-width: 768px){
         flex-direction: row;
         flex-wrap: wrap;
     }
     @media screen and (min-width: 768px){
-
+        min-height: 970px;
     }
 `
 
 const BotoesProximaPagina = styled.div`
     display: flex;
     justify-content: center;
+    button{
+        border: none;
+        background-color: transparent;
+    }
+    button:hover{
+        cursor: pointer;
+    }
 `
 
 export default function Conteudo(){
@@ -115,36 +130,56 @@ export default function Conteudo(){
     const ordenador = ["Data de Publicação"]
     const [modalOpen, setModalOpen] = useState(false)
 
-    const [categoria, setCategoria] = useState('')
+    const [categoria, setCategoria] = useState('Agências')
 
     interface Categorias {
         titulo: string,
         video: string
     }
 
-    const [itemTal, setItemTal] = useState<Categorias[]>([])
+    const [categoriaFiltrada, setCategoriaFiltrada] = useState<Categorias[]>([])
 
     useEffect(() => {
 
         switch (categoria) {
-            case 'Agências': setItemTal(itens.agencias)
+            case 'Agências': setCategoriaFiltrada(itens.agencias)
             break;
-            case 'Chatbot': setItemTal(itens.chatbot)
+            case 'Chatbot': setCategoriaFiltrada(itens.chatbot)
             break
-            case 'Marketing Digital': setItemTal(itens.marketingdigital)
+            case 'Marketing Digital': setCategoriaFiltrada(itens.marketingdigital)
             break
-            case 'Geração de Leads': setItemTal(itens.geracaodeleads)
+            case 'Geração de Leads': setCategoriaFiltrada(itens.geracaodeleads)
             break
-            case 'Mídia Paga': setItemTal(itens.midiapaga) 
+            case 'Mídia Paga': setCategoriaFiltrada(itens.midiapaga) 
             break
-            default : setItemTal([])
+            default : setCategoriaFiltrada([])
         }
     },[categoria])
 
-    console.log(modalOpen)
+    useEffect(() => {
+        disabledScrollBody(false)
+    }, [])
+
+    function disabledScrollBody(isDisable : boolean){
+        if(typeof window !== undefined){
+            document.body.style.overflow = isDisable ? 'hidden' : 'auto'
+        }
+    }
+
+    const [itensPerPage, setItensPerPage] = useState(9)
+    const [currentPage, setCurrentPage] = useState(0)
+    const pages = Math.ceil(categoriaFiltrada.length / itensPerPage)
+    const startIndex = currentPage * itensPerPage
+    const endIndex = startIndex + itensPerPage
+    const currentItens = categoriaFiltrada.slice(startIndex, endIndex)
+
+    useEffect(() => {
+        setCurrentPage(0)
+    }, [itensPerPage])
 
     return(
-        <ConteudoContainer>
+        <ConteudoContainer display={modalOpen ? 'block' : 'none'}>
+            <div className="modal-open"></div>
             <FiltroContainer>
                 <ListaFiltros>
                     {opcoes.map((opcao, index) => (
@@ -169,19 +204,25 @@ export default function Conteudo(){
             </FiltroContainer>
             <hr />
             <ListaItens>
-                {itemTal.map((item, index) => (
-                    <Card key={index} item={item} imagem={imagem} setModalOpen={setModalOpen}/>
+                {currentItens.map((item, index) => (
+                    <Card key={index} item={item} imagem={imagem} setModalOpen={setModalOpen} disabledScrollBody={disabledScrollBody}/>
                 ))}
             </ListaItens>
-            <hr />
+            <hr style={{marginTop:'1.5rem'}}/>
             <BotoesProximaPagina>
                 <span>Página</span>
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
+                {Array.from(Array(pages), (item, index) => (
+                    <button 
+                        key={index} 
+                        value={index} 
+                        onClick={(e) => setCurrentPage(Number(e.target.value))}
+                        style={{}}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
             </BotoesProximaPagina>
-            <ModalCard />
+            <ModalCard modalOpen={modalOpen} setModalOpen={setModalOpen} disabledScrollBody={disabledScrollBody}/>
         </ConteudoContainer>
     )
 }
