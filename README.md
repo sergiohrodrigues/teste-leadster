@@ -1,34 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#### Para realizar esse projeto eu separei ele por partes:
 
-## Getting Started
+1- Cabecalho, responsivo para celular, tablet e desktop.<br/>
+2- Filtro e Cards, responsivo.<br/>
+3- Banner de 14 dias grátis, responsivo.<br/>
+4- Rodape, responsivo.
 
-First, run the development server:
+<hr/>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+#### Organizei meu códio em componentes para facilidade a manutenção, ou para implementar futuras features, para fácil entendimento para o desenvolvedor.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Criei um arquivo Json para puxar os dados, podendo ser facilmente trocado por um back-end com banco de dados futuramente.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<hr/>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Para rodar esse projeto em seu computador, 
 
-## Learn More
+#### Baixe ele como zip em seu computador clicando no botão verde <>CODE e vai em Download Zip, no próprio reposítório
+#### Ou no terminal digitar: git clone "[link reposítório](https://github.com/sergiohrodrigues/teste-leadster.git)"
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Após fazer isso , abra o terminal e instale suas dependências com: "npm i".
+#### Após isso é só rodar o projeto com "npm run dev".
+<br/>
