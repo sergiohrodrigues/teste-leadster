@@ -7,12 +7,14 @@ const ModalContainer = styled.dialog<{display: string}>`
     position: fixed;
     height: 100vh;
     width: 100vw;
+    min-width: 300px;
     inset: 0;
     display: ${props => props.display};
     justify-content: center;
     align-items: center;
     z-index: 999;
     background-color: transparent;
+    border: none;
     .botoes-download{
         display: none;
     }
@@ -52,6 +54,7 @@ const ModalCardContainer = styled.section`
     background-color: #fff;
     border-radius: 1rem;
     width: 90%;
+    min-width: 281px;
     display: flex;
     flex-direction: column;
     border-top: 5px solid #3887fd;
@@ -73,7 +76,7 @@ const ModalCardContainer = styled.section`
         text-align: center;
     }
     div{
-        padding: 0 1rem 0 1rem;
+        padding: 0 1rem;
         span{
             color: #535353;
             font-weight: bold;
@@ -93,12 +96,10 @@ const ModalCardContainer = styled.section`
                     svg{
                         height: 100%;
                         font-weight: bold;
-                        padding: 0.3rem;
                     }
                     span{
                         height: 100%;
                         font-weight: 400;
-                        padding: 0.3rem;
                     }
                 }
                 button:hover{
@@ -106,8 +107,17 @@ const ModalCardContainer = styled.section`
                 }
             }
         }
-    @media screen and (min-width: 768px){
-        width: 60%;
+        @media screen and (min-width: 768px){
+            width: 60%;
+            div{
+                gap: 1rem;
+                svg{
+                    padding: 0.3rem;
+                }
+                span{
+                    padding: 0.3rem;
+                }
+            }
     }
     @media screen and (min-width: 1024px){
         width: 40%;

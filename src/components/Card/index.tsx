@@ -56,7 +56,7 @@ const CardItem = styled.li<{display: string}>`
         svg{
             position: absolute;
             top: 20%;
-            right: 30%;
+            right: 40%;
             display: ${props => props.display};
             z-index: 100;
         }

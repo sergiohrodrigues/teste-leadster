@@ -177,6 +177,11 @@ export default function Conteudo(){
         setCurrentPage(0)
     }, [itensPerPage])
 
+    function mudarCategoria(opcao: string){
+        setCategoria(opcao)
+        setCurrentPage(0)
+    }
+
     return(
         <ConteudoContainer display={modalOpen ? 'block' : 'none'}>
             <div className="modal-open"></div>
@@ -184,7 +189,7 @@ export default function Conteudo(){
                 <ListaFiltros>
                     {opcoes.map((opcao, index) => (
                         <Item 
-                            onClick={() => setCategoria(opcao)} 
+                            onClick={() => mudarCategoria(opcao)} 
                             key={index}
                             style={{backgroundColor: categoria === opcao ? '#3887fd' : '', color : categoria === opcao ? '#fff' : ''}}
                         >
@@ -216,7 +221,7 @@ export default function Conteudo(){
                         key={index} 
                         value={index} 
                         onClick={(e) => setCurrentPage(Number(e.target.value))}
-                        style={{}}
+                        style={{border: currentPage === index ? '1px solid blue' : '', color: currentPage === index ? 'blue' : ''}}
                     >
                         {index + 1}
                     </button>
