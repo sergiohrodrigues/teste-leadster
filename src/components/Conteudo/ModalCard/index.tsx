@@ -1,6 +1,8 @@
 import { styled } from "styled-components"
 import { AiOutlineCloudDownload, AiOutlineClose } from 'react-icons/ai'
 import { Dispatch, SetStateAction } from "react"
+import { itemClicado } from "@/states/atom"
+import { useRecoilValue } from 'recoil'
 
 const ModalContainer = styled.dialog<{display: string}>`
     padding: 0;
@@ -135,18 +137,24 @@ interface Props {
 
 
 export default function ModalCard({modalOpen, setModalOpen, disabledScrollBody}: Props){
+
+    const listaItemClicado = useRecoilValue(itemClicado)
+
     const fecharModal = () => {
         setModalOpen(false)
         disabledScrollBody(false)
     }
     return(
-        <ModalContainer 
-            display={modalOpen ? 'flex': 'none'}
-        >
-            <ModalCardContainer >
+        <ModalContainer display={modalOpen ? 'flex': 'none'}>
+            <ModalCardContainer>
                 <AiOutlineClose className="fecharModal" onClick={fecharModal}/>
-                <h2>Webinar: Como aumentar a Geração de Leads Qualificados do seu Site</h2>
-                <iframe src="https://www.youtube.com/embed/9L9ZkGX1p_k" width='100%' height="300px"></iframe>
+                <h2>{listaItemClicado.titulo}</h2>
+                <iframe 
+                    src={listaItemClicado.video} 
+                    width='100%' 
+                    height="300px"
+                    frameBorder="0"
+                />
                 <div>
                     <span>Descrição</span>
                     <hr style={{marginTop: '0.5rem', width:'100%'}}/>

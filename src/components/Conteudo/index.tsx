@@ -4,6 +4,10 @@ import { useEffect, useState } from "react"
 import itens from '../../itens.json'
 import { Card } from '../Card'
 import ModalCard from './ModalCard'
+import { itemClicado } from "@/states/atom"
+import { useSetRecoilState } from 'recoil'
+import { Iitem } from "@/interface/Item"
+import SegundoConteudo from "./SegundoConteudo"
 
 const ConteudoContainer = styled.main<{display : string}>`
     padding: 4rem 0;
@@ -101,21 +105,27 @@ const ListaItens = styled.ul`
     width: 90%;
     margin: 2rem auto 0 auto;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     flex-wrap: wrap;
     gap: 2rem;
     @media screen and (min-width: 768px){
+        gap: 0.5rem;
         flex-direction: row;
+        justify-content: center;
         flex-wrap: wrap;
     }
-    @media screen and (min-width: 768px){
-        min-height: 970px;
+    @media screen and (min-width: 1024px){
     }
 `
 
 const BotoesProximaPagina = styled.div`
     display: flex;
     justify-content: center;
+    gap: 1rem;
+    span{
+        font-weight: bold;
+    }
     button{
         border: none;
         background-color: transparent;
@@ -132,12 +142,7 @@ export default function Conteudo(){
 
     const [categoria, setCategoria] = useState('Agências')
 
-    interface Categorias {
-        titulo: string,
-        video: string
-    }
-
-    const [categoriaFiltrada, setCategoriaFiltrada] = useState<Categorias[]>([])
+    const [categoriaFiltrada, setCategoriaFiltrada] = useState<Iitem[]>([])
 
     useEffect(() => {
 
@@ -181,11 +186,18 @@ export default function Conteudo(){
         setCategoria(opcao)
         setCurrentPage(0)
     }
+    const setItemClicado = useSetRecoilState(itemClicado)
+
+    function passarItemParaOModal(item: Iitem){
+        setItemClicado(item)
+    }
 
     return(
         <ConteudoContainer display={modalOpen ? 'block' : 'none'}>
             <div className="modal-open"></div>
-            <FiltroContainer>
+
+            <FiltroContainer id="voltarAqui">
+
                 <ListaFiltros>
                     {opcoes.map((opcao, index) => (
                         <Item 
@@ -197,6 +209,7 @@ export default function Conteudo(){
                         </Item>
                     ))}
                 </ListaFiltros>
+
                 <OrdenadorContainer>
                     <span>Ordenar por</span>
                     <select>
@@ -206,28 +219,37 @@ export default function Conteudo(){
                         ))}
                     </select>
                 </OrdenadorContainer>
+
             </FiltroContainer>
+
             <hr />
+
             <ListaItens>
                 {currentItens.map((item, index) => (
-                    <Card key={index} item={item} imagem={imagem} setModalOpen={setModalOpen} disabledScrollBody={disabledScrollBody}/>
+                    <Card key={index} item={item} imagem={imagem} setModalOpen={setModalOpen} disabledScrollBody={disabledScrollBody} passarItemParaOModal={passarItemParaOModal}/>
                 ))}
             </ListaItens>
+
             <hr style={{marginTop:'1.5rem'}}/>
+
             <BotoesProximaPagina>
                 <span>Página</span>
                 {Array.from(Array(pages), (item, index) => (
                     <button 
                         key={index} 
                         value={index} 
-                        onClick={(e) => setCurrentPage(Number(e.target.value))}
-                        style={{border: currentPage === index ? '1px solid blue' : '', color: currentPage === index ? 'blue' : ''}}
+                        onClick={e => setCurrentPage(Number((e.target as HTMLInputElement).value))}
+                        style={{border: currentPage === index ? '2px solid blue' : '', color: currentPage === index ? 'blue' : '', fontWeight: currentPage === index ? 'bold' : ''}}
                     >
                         {index + 1}
                     </button>
                 ))}
             </BotoesProximaPagina>
+
             <ModalCard modalOpen={modalOpen} setModalOpen={setModalOpen} disabledScrollBody={disabledScrollBody}/>
+
+            <SegundoConteudo />
+            
         </ConteudoContainer>
     )
 }

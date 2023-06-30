@@ -2,11 +2,13 @@ import Image, { StaticImageData } from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { styled } from "styled-components";
 import { FaPlay } from 'react-icons/fa'
+import { Iitem } from "@/interface/Item";
 
 const CardItem = styled.li<{display: string}>`
     box-shadow: 0 10px 10px 2px lightgray;
     border-radius: 1rem;
     max-width: 300px;
+    height: 300px;
     position: relative;
     img{
         width: 100%;
@@ -43,10 +45,12 @@ const CardItem = styled.li<{display: string}>`
         z-index: 100;
     }
 
+    @media screen and (min-width: 768px){
+    }
+
     @media screen and (min-width: 1024px){
         max-width: 30%;
         position: relative;
-        height: 300px;
         span{
             div{
                 width: 280px;
@@ -68,15 +72,13 @@ const CardItem = styled.li<{display: string}>`
 
 interface PropsConteudo {
     imagem: StaticImageData,
-    item: {
-        titulo: string;
-        video: string;
-    }
+    item: Iitem
     setModalOpen: Dispatch<SetStateAction<boolean>>,
-    disabledScrollBody: (isDisable: boolean) => void
+    disabledScrollBody: (isDisable: boolean) => void,
+    passarItemParaOModal: (item: Iitem) => void
 }
 
-export const Card = ({imagem, item, setModalOpen, disabledScrollBody}: PropsConteudo) => {
+export const Card = ({imagem, item, setModalOpen, disabledScrollBody, passarItemParaOModal}: PropsConteudo) => {
     const [playVideo, setPlayVideo] = useState(false)
 
     function ativarBotaoModal(){
@@ -86,10 +88,12 @@ export const Card = ({imagem, item, setModalOpen, disabledScrollBody}: PropsCont
     function desativarBotaoModal(){
         setPlayVideo(false)
     }
+
     
-    function abrirModal(){
+    function abrirModal(item: Iitem){
         setModalOpen(true)
         disabledScrollBody(true)
+        passarItemParaOModal(item)
     }
 
     return(
@@ -98,7 +102,7 @@ export const Card = ({imagem, item, setModalOpen, disabledScrollBody}: PropsCont
             <FaPlay  
                 size={80} 
                 color="#fff"
-                onClick={abrirModal}
+                onClick={() => abrirModal(item)}
             />
             <span>
                 <div></div>
