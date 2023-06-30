@@ -16,7 +16,7 @@
 # Para rodar o projeto:
 
 #### No próprio reposítório, baixe ele como zip em seu computador clicando no botão verde <>CODE e vai em Download Zip.
-#### Ou no terminal digitar: <br/>git clone "link reposítóriohttps://github.com/sergiohrodrigues/teste-leadster.git"
+#### Ou no terminal digitar: <br/>git clone "https://github.com/sergiohrodrigues/teste-leadster.git"
 
 #### Após fazer isso , abra o terminal e instale suas dependências com: <br/>"npm i".
 #### Após instalar as dependências é só rodar o projeto com: <br/>"npm run dev".
